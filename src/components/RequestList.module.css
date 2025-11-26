@@ -120,6 +120,34 @@
     font-family: "JetBrains Mono", monospace;
 }
 
+.actionButtons {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.duplicateButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .duplicateButton {
+    opacity: 1;
+}
+
+.duplicateButton:hover {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
 .deleteButton {
     padding: 0.25rem;
     background: transparent;

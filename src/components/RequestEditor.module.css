@@ -6,6 +6,29 @@
     background-color: var(--bg-primary);
 }
 
+.nameHeader {
+    padding: 1rem 1rem 0.5rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.nameInput {
+    width: 100%;
+    background-color: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.nameInput:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
 .toolbar {
     padding: 1rem;
     border-bottom: 1px solid var(--border);
@@ -67,6 +90,25 @@
 .sendButton:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.duplicateButton {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    padding: 0.5rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.duplicateButton:hover {
+    background-color: var(--bg-hover);
+    color: var(--text-primary);
+    border-color: var(--accent);
 }
 
 .tabs {

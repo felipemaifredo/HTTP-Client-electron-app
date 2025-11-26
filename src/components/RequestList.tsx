@@ -9,6 +9,7 @@ interface Props {
     requests: HttpRequest[]
     selectedRequestId: string | null
     onSelectRequest: (id: string) => void
+    onDuplicateRequest?: (id: string) => void
 }
 
 interface ModalState {
@@ -20,7 +21,7 @@ interface ModalState {
     isDanger?: boolean
 }
 
-const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, onSelectRequest }) => {
+const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, onSelectRequest, onDuplicateRequest }) => {
     const [modal, setModal] = useState<ModalState | null>(null)
 
     const handleNewRequest = () => {
@@ -57,6 +58,16 @@ const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, 
         })
     }
 
+    const handleDuplicate = async (e: React.MouseEvent, id: string) => {
+        e.stopPropagation()
+        if (onDuplicateRequest) {
+            onDuplicateRequest(id)
+        } else {
+            const duplicated = await projectsStore.duplicateRequest(projectId, id)
+            onSelectRequest(duplicated.id)
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.header}>
@@ -80,16 +91,28 @@ const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, 
                             <div className={styles.requestName}>{request.name}</div>
                             <div className={styles.requestUrl}>{request.url || "(no url)"}</div>
                         </div>
-                        <button
-                            className={styles.deleteButton}
-                            onClick={(e) => handleDelete(e, request.id)}
-                            title="Delete"
-                        >
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
+                        <div className={styles.actionButtons}>
+                            <button
+                                className={styles.duplicateButton}
+                                onClick={(e) => handleDuplicate(e, request.id)}
+                                title="Duplicate"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4 2H11L14 5V12C14 12.5304 13.7893 13.0391 13.4142 13.4142C13.0391 13.7893 12.5304 14 12 14H4C3.46957 14 2.96086 13.7893 2.58579 13.4142C2.21071 13.0391 2 12.5304 2 12V4C2 3.46957 2.21071 2.96086 2.58579 2.58579C2.96086 2.21071 3.46957 2 4 2Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    <path d="M11 2V5H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                </svg>
+                            </button>
+                            <button
+                                className={styles.deleteButton}
+                                onClick={(e) => handleDelete(e, request.id)}
+                                title="Delete"
+                            >
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 ))}
                 {requests.length === 0 && (

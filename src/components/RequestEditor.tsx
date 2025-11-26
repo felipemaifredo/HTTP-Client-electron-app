@@ -117,8 +117,26 @@ const RequestEditor: React.FC<Props> = ({ projectId, request }) => {
         }
     }
 
+    const handleNameChange = (newName: string) => {
+        const updated = { ...localRequest, name: newName }
+        setLocalRequest(updated)
+    }
+
+    const handleNameBlur = () => {
+        save()
+    }
+
     return (
         <div className={styles.editor}>
+            <div className={styles.nameHeader}>
+                <input
+                    className={styles.nameInput}
+                    value={localRequest.name}
+                    onChange={(e) => handleNameChange(e.target.value)}
+                    onBlur={handleNameBlur}
+                    placeholder="Request Name"
+                />
+            </div>
             <div className={styles.toolbar}>
                 <select
                     className={styles.methodSelect}

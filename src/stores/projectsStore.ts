@@ -63,6 +63,25 @@ export const projectsStore = {
         await db.projects.put(project)
     },
 
+    duplicateRequest: async (projectId: string, requestId: string) => {
+        const project = await db.projects.get(projectId)
+        if (!project) throw new Error("Project not found")
+
+        const originalRequest = project.requests.find((r) => r.id === requestId)
+        if (!originalRequest) throw new Error("Request not found")
+
+        const duplicatedRequest: HttpRequest = {
+            ...originalRequest,
+            id: uuidv4(),
+            name: `${originalRequest.name} (Copy)`,
+            createdAt: Date.now()
+        }
+
+        project.requests.push(duplicatedRequest)
+        await db.projects.put(project)
+        return duplicatedRequest
+    },
+
     importProjects: async (projects: Project[]) => {
         // Generate new IDs for imported projects to avoid conflicts
         const projectsWithNewIds = projects.map(project => ({

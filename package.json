@@ -1,7 +1,7 @@
 {
   "name": "http-client-electron",
   "private": true,
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Modern HTTP Client built with Electron and React",
   "author": "felipemaifredo",
   "main": "electron/main.js",

@@ -36,6 +36,13 @@ function App() {
         setSelectedProjectId(project.id)
     }
 
+    const handleDuplicateRequest = async (requestId: string) => {
+        if (selectedProjectId) {
+            const duplicated = await projectsStore.duplicateRequest(selectedProjectId, requestId)
+            setSelectedRequestId(duplicated.id)
+        }
+    }
+
     return (
         <div className={styles.app}>
             <TitleBar
@@ -61,6 +68,7 @@ function App() {
                             requests={selectedProject?.requests || []}
                             selectedRequestId={selectedRequestId}
                             onSelectRequest={setSelectedRequestId}
+                            onDuplicateRequest={handleDuplicateRequest}
                         />
                     ) : (
                         <div className={styles.emptyStateSmall}>Select or create a project</div>
