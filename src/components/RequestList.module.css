@@ -154,6 +154,173 @@
     border: none;
     cursor: pointer;
     color: var(--danger);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.deleteButton:hover {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--bg-secondary);
+}
+
+.header {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.headerTitle {
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.newRequestButton {
+    padding: 0.25rem 0.5rem;
+    background-color: var(--accent);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.newRequestButton:hover {
+    background-color: var(--accent-hover);
+}
+
+.requestList {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+}
+
+.requestItem {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    transition: background-color 0.15s;
+    border-left: 3px solid transparent;
+}
+
+.requestItem:hover {
+    background-color: var(--bg-hover);
+}
+
+.requestItem.active {
+    background-color: var(--bg-tertiary);
+    border-left-color: var(--accent);
+}
+
+.methodBadge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    min-width: 45px;
+    text-align: center;
+}
+
+.methodBadge.GET {
+    color: var(--success);
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.methodBadge.POST {
+    color: var(--warning);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.methodBadge.PUT {
+    color: var(--info);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.methodBadge.DELETE {
+    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.methodBadge.PATCH {
+    color: var(--patch);
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.requestInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.requestName {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.requestUrl {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.duplicateButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .duplicateButton {
+    opacity: 1;
+}
+
+.duplicateButton:hover {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.deleteButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--danger);
     opacity: 0;
     transition: opacity 0.2s;
     display: inline-flex;
@@ -174,4 +341,704 @@
     text-align: center;
     color: var(--text-secondary);
     font-size: 0.875rem;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.newFolderButton {
+    padding: 0.25rem 0.5rem;
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.newFolderButton:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.folderContainer {
+    border-bottom: 1px solid var(--border);
+}
+
+.folderHeader {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.15s;
+}
+
+.folderHeader:hover {
+    background-color: var(--bg-hover);
+}
+
+.folderTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.folderIcon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.folderName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folderCount {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.folderActions {
+    display: flex;
+    align-items: center;
+}
+
+.methodBadge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    min-width: 45px;
+    text-align: center;
+}
+
+.methodBadge.GET {
+    color: var(--success);
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.methodBadge.POST {
+    color: var(--warning);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.methodBadge.PUT {
+    color: var(--info);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.methodBadge.DELETE {
+    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.methodBadge.PATCH {
+    color: var(--patch);
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.requestInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.requestName {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.requestUrl {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.duplicateButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .duplicateButton {
+    opacity: 1;
+}
+
+.duplicateButton:hover {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.deleteButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--danger);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .deleteButton {
+    opacity: 1;
+}
+
+.deleteButton:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.emptyState {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.newFolderButton {
+    padding: 0.25rem 0.5rem;
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.newFolderButton:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.folderContainer {
+    border-bottom: 1px solid var(--border);
+}
+
+.folderHeader {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.15s;
+}
+
+.folderHeader:hover {
+    background-color: var(--bg-hover);
+}
+
+.folderTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.folderIcon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.folderName {
+    font-size: 0.875rem;
+}
+
+.folderIcon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.folderName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folderCount {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.folderActions {
+    display: flex;
+    align-items: center;
+}
+
+.methodBadge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    min-width: 45px;
+    text-align: center;
+}
+
+.methodBadge.GET {
+    color: var(--success);
+    background-color: rgba(16, 185, 129, 0.1);
+}
+
+.methodBadge.POST {
+    color: var(--warning);
+    background-color: rgba(245, 158, 11, 0.1);
+}
+
+.methodBadge.PUT {
+    color: var(--info);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.methodBadge.DELETE {
+    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.methodBadge.PATCH {
+    color: var(--patch);
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.requestInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.requestName {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.requestUrl {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.duplicateButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .duplicateButton {
+    opacity: 1;
+}
+
+.duplicateButton:hover {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.deleteButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--danger);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .deleteButton {
+    opacity: 1;
+}
+
+.deleteButton:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.emptyState {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.newFolderButton {
+    padding: 0.25rem 0.5rem;
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.newFolderButton:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.folderContainer {
+    border-bottom: 1px solid var(--border);
+}
+
+.folderHeader {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.15s;
+}
+
+.folderHeader:hover {
+    background-color: var(--bg-hover);
+}
+
+.folderTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.folderIcon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.folderName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folderActions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.folderAddButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+    font-weight: bold;
+    opacity: 1;
+}
+
+.folderAddButton:hover {
+    color: var(--accent-hover);
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 4px;
+}
+
+.folderRenameButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.folderRenameButton:hover {
+    color: var(--info);
+}
+
+.methodBadge.DELETE {
+    color: var(--danger);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.methodBadge.PATCH {
+    color: var(--patch);
+    background-color: rgba(139, 92, 246, 0.1);
+}
+
+.requestInfo {
+    flex: 1;
+    overflow: hidden;
+}
+
+.requestName {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.requestUrl {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-family: "JetBrains Mono", monospace;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.duplicateButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .duplicateButton {
+    opacity: 1;
+}
+
+.duplicateButton:hover {
+    color: var(--accent);
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+.deleteButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--danger);
+    opacity: 0;
+    transition: opacity 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.requestItem:hover .deleteButton {
+    opacity: 1;
+}
+
+.deleteButton:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.emptyState {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.headerButtons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.newFolderButton {
+    padding: 0.25rem 0.5rem;
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.newFolderButton:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+}
+
+.folderContainer {
+    border-bottom: 1px solid var(--border);
+}
+
+.folderHeader {
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    background-color: var(--bg-secondary);
+    transition: background-color 0.15s;
+}
+
+.folderHeader:hover {
+    background-color: var(--bg-hover);
+}
+
+.folderTitle {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.folderIcon {
+    display: flex;
+    align-items: center;
+    color: var(--text-secondary);
+}
+
+.folderName {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.folderActions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.folderAddButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    line-height: 1;
+    font-weight: bold;
+    opacity: 1;
+}
+
+.folderAddButton:hover {
+    color: var(--accent-hover);
+    background-color: rgba(59, 130, 246, 0.1);
+    border-radius: 4px;
+}
+
+.folderRenameButton {
+    padding: 0.25rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 1;
+}
+
+.folderRenameButton:hover {
+    color: var(--info);
+}
+
+.folderActions .deleteButton {
+    opacity: 1;
+    color: var(--danger);
+}
+
+.emptyFolderState {
+    padding: 0.75rem 1rem;
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    font-style: italic;
+}
+
+.editInput {
+    width: 100%;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--accent);
+    outline: none;
 }

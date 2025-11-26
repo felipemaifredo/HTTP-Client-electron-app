@@ -53,8 +53,8 @@ const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelect
         setModal({
             isOpen: true,
             type: "confirm",
-            title: "Excluir Projeto",
-            message: "Tem certeza que deseja excluir este projeto? Todas as requisições serão perdidas.",
+            title: "Delete Project",
+            message: "Are you sure you want to delete this project? All requests will be lost.",
             isDanger: true,
             onConfirm: async () => {
                 await projectsStore.deleteProject(id)

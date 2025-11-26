@@ -15,7 +15,8 @@ function App() {
 
     const projects = useLiveQuery(() => projectsStore.getAll())
     const selectedProject = projects?.find(p => p.id === selectedProjectId)
-    const selectedRequest = selectedProject?.requests.find(r => r.id === selectedRequestId)
+    const selectedRequest = selectedProject?.requests.find(r => r.id === selectedRequestId) ||
+        selectedProject?.folders?.flatMap(f => f.requests).find(r => r.id === selectedRequestId)
 
     useEffect(() => {
         if (!selectedProjectId && projects && projects.length > 0) {
@@ -66,6 +67,7 @@ function App() {
                         <RequestList
                             projectId={selectedProjectId}
                             requests={selectedProject?.requests || []}
+                            folders={selectedProject?.folders || []}
                             selectedRequestId={selectedRequestId}
                             onSelectRequest={setSelectedRequestId}
                             onDuplicateRequest={handleDuplicateRequest}

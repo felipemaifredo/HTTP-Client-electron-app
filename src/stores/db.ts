@@ -19,10 +19,18 @@ export interface HttpRequest {
     }
 }
 
+export interface Folder {
+    id: string
+    name: string
+    requests: HttpRequest[]
+    isOpen?: boolean
+}
+
 export interface Project {
     id: string
     name: string
     requests: HttpRequest[]
+    folders: Folder[]
     environments?: {
         dev: Record<string, string>
         production: Record<string, string>

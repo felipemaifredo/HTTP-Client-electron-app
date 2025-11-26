@@ -9,10 +9,14 @@
 .nameHeader {
     padding: 1rem 1rem 0.5rem 1rem;
     border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
 .nameInput {
-    width: 100%;
+    flex: 1;
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     border: 1px solid var(--border);
@@ -234,15 +238,6 @@
 .responseBody {
     height: 90%;
     background-color: var(--bg-primary);
-    padding: 1rem;
-    border-radius: var(--radius-md);
-    overflow: auto;
-}
-
-.responseCode {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.875rem;
-    color: var(--text-primary);
     white-space: pre-wrap;
     word-break: break-all;
 }
@@ -252,4 +247,25 @@
     color: var(--text-muted);
     padding: 2rem;
     font-size: 0.875rem;
+}
+
+.changeFolderButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    background-color: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.changeFolderButton:hover {
+    border-color: var(--text-primary);
+    color: var(--text-primary);
+    background-color: var(--bg-hover);
 }

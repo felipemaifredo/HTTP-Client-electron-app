@@ -1,7 +1,7 @@
 {
   "name": "http-client-electron",
   "private": true,
-  "version": "1.0.5",
+  "version": "1.0.7",
   "description": "Modern HTTP Client built with Electron and React",
   "author": "felipemaifredo",
   "main": "electron/main.js",
@@ -16,7 +16,7 @@
   },
   "build": {
     "appId": "com.httpclient.app",
-    "productName": "HTTP Client",
+    "productName": "Plincthet",
     "directories": {
       "output": "dist-installer"
     },
@@ -53,6 +53,8 @@
     "quicktype-core": "^23.2.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0",
+    "react-json-tree": "^0.20.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {

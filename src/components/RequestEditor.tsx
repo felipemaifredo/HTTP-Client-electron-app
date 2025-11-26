@@ -1,13 +1,41 @@
+//
+import styles from "./RequestEditor.module.css"
+
+//
 import React, { useState, useEffect } from "react"
+import { FiFolder } from "react-icons/fi"
+import { JSONTree } from 'react-json-tree'
+
+//
 import { HttpRequest, Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import { httpClient } from "../services/httpClient"
 //import { generateTypes } from "../utils/typeGenerator"
-import styles from "./RequestEditor.module.css"
+import FolderSelectionModal from "./FolderSelectionModal"
 
+//
 interface Props {
     project: Project
     request: HttpRequest
+}
+
+const transparentTheme = {
+    base00: "transparent", // background
+    base01: "#f0f0f0",
+    base02: "#d0d0d0",
+    base03: "#b0b0b0",
+    base04: "#505050",
+    base05: "#303030",
+    base06: "#202020",
+    base07: "#101010",
+    base08: "#ff0000",
+    base09: "#ff9900",
+    base0A: "#ffcc00",
+    base0B: "#009400ff",
+    base0C: "#00cccc",
+    base0D: "#4891ffff",
+    base0E: "#cc00ff",
+    base0F: "#ff0066",
 }
 
 const RequestEditor: React.FC<Props> = ({ project, request }) => {
@@ -229,6 +257,34 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         save()
     }
 
+    const [showFolderModal, setShowFolderModal] = useState(false)
+
+    const handleMoveRequest = async (targetFolderId: string | null) => {
+        try {
+            await projectsStore.moveRequest(project.id, request.id, targetFolderId)
+            setShowFolderModal(false)
+            // Ideally we should trigger a refresh or the parent component handles the update via store subscription/callback
+            // Since we are modifying the store, the app should react if it's reactive. 
+            // However, RequestEditor receives 'request' as prop. If the request is moved, it might disappear from the list if the list is filtering?
+            // No, the list shows all requests. But the 'project' prop might need to be refreshed?
+            // The 'project' prop comes from App.tsx which likely gets it from a hook or store.
+            // Let's assume the data flow handles it, but we might need to be careful.
+        } catch (error) {
+            console.error("Failed to move request:", error)
+            alert("Failed to move request")
+        }
+    }
+
+    const getCurrentFolderId = () => {
+        if (!project.folders) return null
+        for (const folder of project.folders) {
+            if (folder.requests.find(r => r.id === request.id)) {
+                return folder.id
+            }
+        }
+        return null
+    }
+
     return (
         <div className={styles.editor}>
             <div className={styles.nameHeader}>
@@ -239,6 +295,13 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     onBlur={handleNameBlur}
                     placeholder="Request Name"
                 />
+                <button
+                    className={styles.changeFolderButton}
+                    onClick={() => setShowFolderModal(true)}
+                    title="Change Folder"
+                >
+                    <FiFolder /> Change Folder
+                </button>
             </div>
 
             <div className={styles.envBar} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", borderBottom: "1px solid #333" }}>
@@ -444,14 +507,16 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                             </div>
                         )}
 
-                        <div style={{ flex: 1, overflow: "auto" }}>
-                            <pre className={styles.responseCode}>
-                                {response.error
-                                    ? response.error
-                                    : JSON.stringify(response.data, null, 2)}
-                            </pre>
+                        <div style={{ flex: 1, overflow: "auto", padding: "0 10px", borderRadius: "8px"}}>
+                            {response.error
+                                ? (
+                                    <JSONTree data={response.error} theme={transparentTheme} shouldExpandNodeInitially={() => true} />
+                                )
+                                : ( 
+                                    <JSONTree data={response.data} theme={transparentTheme} shouldExpandNodeInitially={() => true} />
+                                )
+                            }
                         </div>
-
                         {/*showTypes && (
                             <div style={{ flex: 1, overflow: "auto", borderLeft: "1px solid #333", paddingLeft: "10px", position: "relative" }}>
                                 <button
@@ -481,7 +546,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 </div>
             )
             }
-
             {
                 !response && (
                     <div className={styles.emptyResponse}>
@@ -489,6 +553,14 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     </div>
                 )
             }
+            {showFolderModal && (
+                <FolderSelectionModal
+                    folders={project.folders || []}
+                    currentFolderId={getCurrentFolderId()}
+                    onSelect={handleMoveRequest}
+                    onCancel={() => setShowFolderModal(false)}
+                />
+            )}
         </div >
     )
 }

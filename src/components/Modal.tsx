@@ -71,7 +71,7 @@ const Modal: React.FC<ModalProps> = ({
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onKeyDown={handleKeyDown}
-                        placeholder="Digite aqui..."
+                        placeholder="Type here..."
                     />
                 )}
 
@@ -81,7 +81,7 @@ const Modal: React.FC<ModalProps> = ({
                             className={`${styles.button} ${styles.buttonCancel}`}
                             onClick={onCancel}
                         >
-                            Cancelar
+                            Cancel
                         </button>
                     )}
                     <button
@@ -89,7 +89,7 @@ const Modal: React.FC<ModalProps> = ({
                             }`}
                         onClick={handleConfirm}
                     >
-                        {type === "alert" ? "OK" : type === "confirm" ? "Confirmar" : "Criar"}
+                        {type === "alert" ? "OK" : type === "confirm" ? "Confirm" : "Create"}
                     </button>
                 </div>
             </div>
