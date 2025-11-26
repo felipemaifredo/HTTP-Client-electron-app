@@ -11,6 +11,10 @@ export const projectsStore = {
             id: uuidv4(),
             name,
             requests: [],
+            environments: {
+                dev: {},
+                production: {}
+            }
         }
         await db.projects.add(project)
         return project

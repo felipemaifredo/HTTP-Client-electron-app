@@ -76,9 +76,9 @@ function App() {
                 </div>
 
                 <div className={styles.requestEditorContainer}>
-                    {selectedProjectId && selectedRequest ? (
+                    {selectedProjectId && selectedRequest && selectedProject ? (
                         <RequestEditor
-                            projectId={selectedProjectId}
+                            project={selectedProject}
                             request={selectedRequest}
                         />
                     ) : (

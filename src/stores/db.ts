@@ -9,12 +9,24 @@ export interface HttpRequest {
     params: Record<string, string>
     body: any
     createdAt: number
+    lastResponse?: {
+        status: number
+        statusText: string
+        data: any
+        headers: any
+        duration: number
+        timestamp: number
+    }
 }
 
 export interface Project {
     id: string
     name: string
     requests: HttpRequest[]
+    environments?: {
+        dev: Record<string, string>
+        production: Record<string, string>
+    }
 }
 
 export class MyDatabase extends Dexie {

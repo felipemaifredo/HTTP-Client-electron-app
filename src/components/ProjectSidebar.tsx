@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import Modal, { ModalType } from "./Modal"
+import EnvironmentVariablesModal from "./EnvironmentVariablesModal"
 import styles from "./ProjectSidebar.module.css"
 
 interface Props {
@@ -23,6 +24,7 @@ const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelect
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editName, setEditName] = useState("")
     const [modal, setModal] = useState<ModalState | null>(null)
+    const [envModalProject, setEnvModalProject] = useState<Project | null>(null)
 
     const handleStartEdit = (project: Project) => {
         setEditingId(project.id)
@@ -108,6 +110,16 @@ const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelect
                                     </button>
                                     <button
                                         className={styles.actionButton}
+                                        onClick={(e) => { e.stopPropagation(); setEnvModalProject(project) }}
+                                        title="Settings"
+                                    >
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <circle cx="12" cy="12" r="3"></circle>
+                                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                        </svg>
+                                    </button>
+                                    <button
+                                        className={styles.actionButton}
                                         onClick={(e) => handleExport(e, project)}
                                         title="Export Project"
                                     >
@@ -145,6 +157,13 @@ const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelect
                     onConfirm={modal.onConfirm}
                     onCancel={() => setModal(null)}
                     isDanger={modal.isDanger}
+                />
+            )}
+
+            {envModalProject && (
+                <EnvironmentVariablesModal
+                    project={envModalProject}
+                    onClose={() => setEnvModalProject(null)}
                 />
             )}
         </div>
