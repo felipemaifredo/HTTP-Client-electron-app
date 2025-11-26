@@ -28,8 +28,8 @@ const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, 
         setModal({
             isOpen: true,
             type: "prompt",
-            title: "Nova Requisição",
-            message: "Digite o nome da requisição:",
+            title: "New Request",
+            message: "Enter the request name:",
             onConfirm: async (name) => {
                 if (name && name.trim()) {
                     const newRequest = await projectsStore.addRequest(projectId, name.trim())
@@ -45,8 +45,8 @@ const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, 
         setModal({
             isOpen: true,
             type: "confirm",
-            title: "Excluir Requisição",
-            message: "Tem certeza que deseja excluir esta requisição?",
+            title: "Delete Request",
+            message: "Are you sure you want to delete this request?",
             isDanger: true,
             onConfirm: async () => {
                 await projectsStore.deleteRequest(projectId, id)
@@ -66,6 +66,25 @@ const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, 
             const duplicated = await projectsStore.duplicateRequest(projectId, id)
             onSelectRequest(duplicated.id)
         }
+    }
+
+    function extractAfterDoubleBraces(input: string) {
+        const regex = /^{{[^}]+}}(.*)$/
+
+        const match = input.match(regex)
+        if (!match) {
+            // it doesn't start with {{...}}
+            return input
+        }
+
+        const rest = match[1]
+
+        if (rest.trim() === "") {
+            // {{...}} It's the entire string, so it returns the string itself.
+            return input
+        }
+
+        return rest
     }
 
     return (
@@ -89,7 +108,7 @@ const RequestList: React.FC<Props> = ({ projectId, requests, selectedRequestId, 
                         </span>
                         <div className={styles.requestInfo}>
                             <div className={styles.requestName}>{request.name}</div>
-                            <div className={styles.requestUrl}>{request.url || "(no url)"}</div>
+                            <div className={styles.requestUrl}>{`${extractAfterDoubleBraces(request.url)}` || ""}</div>
                         </div>
                         <div className={styles.actionButtons}>
                             <button

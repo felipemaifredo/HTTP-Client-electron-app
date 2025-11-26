@@ -241,7 +241,7 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 />
             </div>
 
-            <div className={styles.envBar} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", background: "#252525", borderBottom: "1px solid #333" }}>
+            <div className={styles.envBar} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", borderBottom: "1px solid #333" }}>
                 <div style={{ display: "flex", background: "#333", borderRadius: "4px", padding: "2px" }}>
                     <button
                         onClick={() => setActiveEnv("dev")}
