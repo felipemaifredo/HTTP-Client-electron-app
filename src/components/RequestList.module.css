@@ -161,8 +161,9 @@
 }
 
 .deleteButton:hover {
-    color: var(--accent);
     background-color: rgba(59, 130, 246, 0.1);
+    color: var(--danger);
+
 }
 
 .container {

@@ -305,7 +305,7 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
             </div>
 
             <div className={styles.envBar} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", borderBottom: "1px solid #333" }}>
-                <div style={{ display: "flex", background: "#333", borderRadius: "4px", padding: "2px" }}>
+                <div style={{ display: "flex", background: "var(--bg-tertiary)", borderRadius: "4px", padding: "2px" }}>
                     <button
                         onClick={() => setActiveEnv("dev")}
                         style={{
@@ -335,7 +335,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                         Prod
                     </button>
                 </div>
-
                 <div style={{ display: "flex", gap: "5px", overflowX: "auto", flex: 1 }}>
                     {Object.keys(project.environments?.[activeEnv] || {}).map(key => (
                         <button
@@ -343,9 +342,9 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                             onClick={() => copyVariable(key)}
                             title="Click to copy"
                             style={{
-                                background: copiedKey === key ? "#3b82f6" : "#333",
-                                border: "1px solid #444",
-                                color: copiedKey === key ? "white" : "#aaa",
+                                background: copiedKey === key ? "#3b82f6" : "var(--bg-tertiary)",
+                                border: "1px solid var(--bg-tertiary)",
+                                color: copiedKey === key ? "white" : "#8a8a8aff",
                                 padding: "2px 8px",
                                 borderRadius: "4px",
                                 cursor: "pointer",
@@ -359,7 +358,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     ))}
                 </div>
             </div>
-
             <div className={styles.toolbar}>
                 <select
                     className={styles.methodSelect}
@@ -383,7 +381,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     {loading ? "Sending..." : "Send"}
                 </button>
             </div>
-
             <div className={styles.tabs}>
                 {["params", "headers", "body"].map((tab) => (
                     <button
@@ -395,7 +392,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     </button>
                 ))}
             </div>
-
             <div className={styles.tabContent}>
                 {activeTab === "params" && (
                     <div className={styles.formGroup}>
