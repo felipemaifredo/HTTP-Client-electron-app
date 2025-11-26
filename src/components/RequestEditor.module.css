@@ -99,6 +99,7 @@
 
 .tabContent {
     flex: 1;
+    min-height: 280px;
     overflow: auto;
     padding: 1rem;
 }
@@ -151,7 +152,7 @@
 }
 
 .response {
-    flex: 1;
+    height: 100%;
     overflow: auto;
     padding: 1rem;
     background-color: var(--bg-secondary);
@@ -189,6 +190,7 @@
 }
 
 .responseBody {
+    height: 90%;
     background-color: var(--bg-primary);
     padding: 1rem;
     border-radius: var(--radius-md);
