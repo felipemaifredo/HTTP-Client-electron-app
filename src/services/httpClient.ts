@@ -8,7 +8,7 @@ export const httpClient = {
             url: request.url,
             headers: request.headers,
             params: request.params,
-            data: request.body ? JSON.parse(request.body) : undefined,
+            data: request.body,
         };
 
         return await window.api.runHttpRequest(config);

@@ -7,7 +7,7 @@ export interface HttpRequest {
     url: string
     headers: Record<string, string>
     params: Record<string, string>
-    body: string | null
+    body: any
     createdAt: number
 }
 
