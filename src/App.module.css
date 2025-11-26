@@ -1,0 +1,48 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+}
+
+.mainContent {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.projectSidebarContainer {
+    width: 256px;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.requestListContainer {
+    width: 300px;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.requestEditorContainer {
+    flex: 1;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.emptyState {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: var(--text-secondary);
+}
+
+.emptyStateSmall {
+    padding: 1rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin-top: 2.5rem;
+}

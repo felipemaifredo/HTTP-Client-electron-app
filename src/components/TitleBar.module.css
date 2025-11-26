@@ -1,0 +1,120 @@
+.titlebar {
+    height: 48px;
+    -webkit-app-region: drag;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+    padding-left: 1rem;
+}
+
+.leftSection {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    height: 100%;
+    flex: 1;
+}
+
+.logo {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+}
+
+.appTitle {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-right: 1rem;
+    padding: 0.5rem;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 100%;
+    -webkit-app-region: no-drag;
+}
+
+.actionButton {
+    padding: 0.25rem;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.actionButton:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.actionButton.newProject:hover {
+    color: var(--accent);
+}
+
+.rightSection {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    -webkit-app-region: no-drag;
+}
+
+.themeButton {
+    height: 100%;
+    padding: 0 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.themeButton:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--warning);
+}
+
+.divider {
+    width: 1px;
+    height: 1rem;
+    background-color: var(--border);
+    margin: 0 0.25rem;
+}
+
+.windowButton {
+    height: 100%;
+    padding: 0 1rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.windowButton:hover {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.windowButton.close:hover {
+    background-color: var(--danger);
+    color: white;
+}
