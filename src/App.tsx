@@ -69,8 +69,6 @@ function App() {
             <TitleBar
                 theme={theme}
                 toggleTheme={toggleTheme}
-                onNewProject={handleCreateProject}
-                onImport={importProjects}
                 updateAvailable={updateAvailable}
                 updatePriority={updatePriority}
             />
@@ -81,6 +79,8 @@ function App() {
                         projects={projects || []}
                         selectedProjectId={selectedProjectId}
                         onSelectProject={setSelectedProjectId}
+                        onNewProject={handleCreateProject}
+                        onImport={importProjects}
                     />
                 </div>
 

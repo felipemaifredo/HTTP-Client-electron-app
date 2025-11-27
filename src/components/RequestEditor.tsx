@@ -3,7 +3,6 @@ import styles from "./RequestEditor.module.css"
 
 //
 import React, { useState, useEffect } from "react"
-import { FiFolder } from "react-icons/fi"
 import { JSONTree } from 'react-json-tree'
 
 //
@@ -11,7 +10,6 @@ import { HttpRequest, Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import { httpClient } from "../services/httpClient"
 //import { generateTypes } from "../utils/typeGenerator"
-import FolderSelectionModal from "./FolderSelectionModal"
 
 //
 interface Props {
@@ -253,36 +251,10 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         setLocalRequest(updated)
     }
 
+
+
     const handleNameBlur = () => {
         save()
-    }
-
-    const [showFolderModal, setShowFolderModal] = useState(false)
-
-    const handleMoveRequest = async (targetFolderId: string | null) => {
-        try {
-            await projectsStore.moveRequest(project.id, request.id, targetFolderId)
-            setShowFolderModal(false)
-            // Ideally we should trigger a refresh or the parent component handles the update via store subscription/callback
-            // Since we are modifying the store, the app should react if it's reactive. 
-            // However, RequestEditor receives 'request' as prop. If the request is moved, it might disappear from the list if the list is filtering?
-            // No, the list shows all requests. But the 'project' prop might need to be refreshed?
-            // The 'project' prop comes from App.tsx which likely gets it from a hook or store.
-            // Let's assume the data flow handles it, but we might need to be careful.
-        } catch (error) {
-            console.error("Failed to move request:", error)
-            alert("Failed to move request")
-        }
-    }
-
-    const getCurrentFolderId = () => {
-        if (!project.folders) return null
-        for (const folder of project.folders) {
-            if (folder.requests.find(r => r.id === request.id)) {
-                return folder.id
-            }
-        }
-        return null
     }
 
     return (
@@ -295,13 +267,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     onBlur={handleNameBlur}
                     placeholder="Request Name"
                 />
-                <button
-                    className={styles.changeFolderButton}
-                    onClick={() => setShowFolderModal(true)}
-                    title="Change Folder"
-                >
-                    <FiFolder /> Change Folder
-                </button>
             </div>
 
             <div className={styles.envBar} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", borderBottom: "1px solid #333" }}>
@@ -503,12 +468,12 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                             </div>
                         )}
 
-                        <div style={{ flex: 1, overflow: "auto", padding: "0 10px", borderRadius: "8px"}}>
+                        <div style={{ flex: 1, overflow: "auto", padding: "0 10px", borderRadius: "8px" }}>
                             {response.error
                                 ? (
                                     <JSONTree data={response.error} theme={transparentTheme} shouldExpandNodeInitially={() => true} />
                                 )
-                                : ( 
+                                : (
                                     <JSONTree data={response.data} theme={transparentTheme} shouldExpandNodeInitially={() => true} />
                                 )
                             }
@@ -549,14 +514,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                     </div>
                 )
             }
-            {showFolderModal && (
-                <FolderSelectionModal
-                    folders={project.folders || []}
-                    currentFolderId={getCurrentFolderId()}
-                    onSelect={handleMoveRequest}
-                    onCancel={() => setShowFolderModal(false)}
-                />
-            )}
         </div >
     )
 }

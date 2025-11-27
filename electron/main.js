@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require("electron")
+const { app, BrowserWindow, ipcMain, dialog, shell } = require("electron")
 const path = require("path")
 const fs = require("fs")
 const axios = require("axios")
@@ -59,6 +59,11 @@ app.on("window-all-closed", function () {
 // HTTP Request
 ipcMain.handle("http:request", async (event, config) => {
     try {
+        if (!config.headers) {
+            config.headers = {};
+        }
+        config.headers['User-Agent'] = 'Plincthet';
+
         const response = await axios(config)
         return {
             status: response.status,
@@ -102,3 +107,8 @@ ipcMain.handle("fs:load-projects", async () => {
     }
     return { canceled: true }
 })
+
+// Shell
+ipcMain.handle('shell:open', async (event, url) => {
+    await shell.openExternal(url);
+});

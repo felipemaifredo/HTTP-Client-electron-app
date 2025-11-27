@@ -9,6 +9,8 @@ interface Props {
     projects: Project[]
     selectedProjectId: string | null
     onSelectProject: (id: string) => void
+    onNewProject: () => void
+    onImport: () => void
 }
 
 interface ModalState {
@@ -20,7 +22,7 @@ interface ModalState {
     isDanger?: boolean
 }
 
-const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelectProject }) => {
+const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelectProject, onNewProject, onImport }) => {
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editName, setEditName] = useState("")
     const [modal, setModal] = useState<ModalState | null>(null)
@@ -70,7 +72,26 @@ const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelect
         <div className={styles.sidebar}>
             <div className={styles.header}>
                 <h2 className={styles.headerTitle}>Projects</h2>
-                <span className={styles.headerCount}>{projects.length}</span>
+                <div className={styles.headerActions}>
+                    <button
+                        className={styles.actionButton}
+                        onClick={onNewProject}
+                        title="New Project"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M12 5v14M5 12h14" />
+                        </svg>
+                    </button>
+                    <button
+                        className={styles.actionButton}
+                        onClick={onImport}
+                        title="Import Projects"
+                    >
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                        </svg>
+                    </button>
+                </div>
             </div>
 
             <div className={styles.projectList}>

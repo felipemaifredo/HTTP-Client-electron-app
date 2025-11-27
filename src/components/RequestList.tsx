@@ -2,7 +2,9 @@ import React, { useState } from "react"
 import { HttpRequest, Folder } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import Modal, { ModalType } from "./Modal"
+import FolderSelectionModal from "./FolderSelectionModal"
 import styles from "./RequestList.module.css"
+import { BsFolderSymlink } from "react-icons/bs"
 
 interface Props {
     projectId: string
@@ -26,6 +28,8 @@ const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRe
     const [modal, setModal] = useState<ModalState | null>(null)
     const [editingFolderId, setEditingFolderId] = useState<string | null>(null)
     const [editFolderName, setEditFolderName] = useState("")
+    const [showFolderModal, setShowFolderModal] = useState(false)
+    const [movingRequestId, setMovingRequestId] = useState<string | null>(null)
 
     const handleNewRequest = (folderId?: string) => {
         setModal({
@@ -128,6 +132,30 @@ const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRe
         await projectsStore.toggleFolder(projectId, folderId, !currentState)
     }
 
+    const handleOpenMoveRequest = (e: React.MouseEvent, requestId: string) => {
+        e.stopPropagation()
+        setMovingRequestId(requestId)
+        setShowFolderModal(true)
+    }
+
+    const handleMoveRequest = async (targetFolderId: string | null) => {
+        if (movingRequestId) {
+            await projectsStore.moveRequest(projectId, movingRequestId, targetFolderId)
+            setShowFolderModal(false)
+            setMovingRequestId(null)
+        }
+    }
+
+    const getCurrentFolderId = (requestId: string) => {
+        if (!folders) return null
+        for (const folder of folders) {
+            if (folder.requests.find(r => r.id === requestId)) {
+                return folder.id
+            }
+        }
+        return null
+    }
+
     function extractAfterDoubleBraces(input: string) {
         const regex = /^{{[^}]+}}(.*)$/
 
@@ -161,6 +189,13 @@ const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRe
                 <div className={styles.requestUrl}>{`${extractAfterDoubleBraces(request.url)}` || ""}</div>
             </div>
             <div className={styles.actionButtons}>
+                <button
+                    className={styles.duplicateButton}
+                    onClick={(e) => handleOpenMoveRequest(e, request.id)}
+                    title="Change Folder"
+                >
+                    <BsFolderSymlink />
+                </button>
                 <button
                     className={styles.duplicateButton}
                     onClick={(e) => handleDuplicate(e, request.id)}
@@ -297,6 +332,18 @@ const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRe
                     onConfirm={modal.onConfirm}
                     onCancel={() => setModal(null)}
                     isDanger={modal.isDanger}
+                />
+            )}
+
+            {showFolderModal && movingRequestId && (
+                <FolderSelectionModal
+                    folders={folders || []}
+                    currentFolderId={getCurrentFolderId(movingRequestId)}
+                    onSelect={handleMoveRequest}
+                    onCancel={() => {
+                        setShowFolderModal(false)
+                        setMovingRequestId(null)
+                    }}
                 />
             )}
         </div>

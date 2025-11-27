@@ -1,7 +1,7 @@
 {
-  "name": "http-client-electron",
+  "name": "plincthet-http-client-electron",
   "private": true,
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Modern HTTP Client built with Electron and React",
   "author": "felipemaifredo",
   "main": "electron/main.js",
@@ -15,7 +15,7 @@
     "make:mac": "npm run build && electron-builder --mac"
   },
   "build": {
-    "appId": "com.httpclient.app",
+    "appId": "com.plincthet.app",
     "productName": "Plincthet",
     "directories": {
       "output": "dist-installer"
@@ -29,19 +29,19 @@
       "target": [
         "nsis"
       ],
-      "icon": "src/resourses/logo.png"
+      "icon": "src/resourses/logo.svg"
     },
     "mac": {
       "target": [
         "dmg"
       ],
-      "icon": "src/resourses/logo.png"
+      "icon": "src/resourses/logo.svg"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
-      "icon": "src/resourses/logo.png",
+      "icon": "src/resourses/logo.svg",
       "category": "Network"
     }
   },

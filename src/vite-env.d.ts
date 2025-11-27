@@ -18,6 +18,26 @@ interface Project {
     name: string;
     requests: HttpRequest[];
 }
+/// <reference types="vite/client" />
+
+declare const __APP_VERSION__: string;
+
+interface HttpRequest {
+    id: string;
+    name: string;
+    method: string;
+    url: string;
+    headers: Record<string, string>;
+    params: Record<string, string>;
+    body: string | null;
+    createdAt: number;
+}
+
+interface Project {
+    id: string;
+    name: string;
+    requests: HttpRequest[];
+}
 
 interface ElectronApi {
     runHttpRequest: (config: any) => Promise<any>;
@@ -27,6 +47,7 @@ interface ElectronApi {
     minimize: () => Promise<void>;
     maximize: () => Promise<void>;
     close: () => Promise<void>;
+    openExternal: (url: string) => Promise<void>;
 }
 
 interface Window {
