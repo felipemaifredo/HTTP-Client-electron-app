@@ -1,21 +1,21 @@
 # HTTP Client - Electron App
 
-Um cliente HTTP moderno construído com Electron, React e CSS Modules.
+A modern HTTP Client built with Electron, React, and CSS Modules.
 
-## Requisitos
+## Requirements
 
 - Node.js 16+
 - npm
 
-## Instalação
+## Installation
 
 ```bash
 npm install
 ```
 
-## Desenvolvimento
+## Development
 
-Execute o aplicativo em modo de desenvolvimento:
+Run the application in development mode:
 
 ```bash
 npm run dev
@@ -23,22 +23,22 @@ npm run dev
 
 ## Build
 
-Compile o código TypeScript e construa os assets:
+Compile TypeScript code and build assets:
 
 ```bash
 npm run build
 ```
 
-## Gerar Instalador
+## Generate Installer
 
-### Todas as plataformas
-Para gerar o executável de instalação para a plataforma atual:
+### All Platforms
+To generate the installer executable for the current platform:
 
 ```bash
 npm run make
 ```
 
-### Específico por plataforma
+### Platform Specific
 
 **Linux:**
 ```bash
@@ -55,54 +55,62 @@ npm run make:win
 npm run make:mac
 ```
 
-### Saída
+### Output
 
-Os instaladores serão gerados na pasta `dist-installer/`:
+Installers will be generated in the `dist-installer/` folder:
 
 - **Windows**: `http-client-electron Setup 1.0.0.exe` (NSIS installer)
 - **macOS**: `http-client-electron-1.0.0.dmg`
 - **Linux**: `http-client-electron-1.0.0.AppImage`
 
-> **Nota sobre Cross-Platform Build**: 
-> - **No Windows**: Você pode gerar instaladores para Windows (`.exe`). Para Linux/Mac, você precisaria usar WSL2 ou Docker.
-> - **No Linux**: Você pode gerar AppImage para Linux. Para Windows, precisa do Wine. Para Mac, precisa rodar no macOS.
-> - **No macOS**: Você pode gerar para todas as plataformas (com ferramentas adequadas instaladas).
+> **Cross-Platform Build Note**:
+> - **On Windows**: You can generate installers for Windows (`.exe`). For Linux/Mac, you would need to use WSL2 or Docker.
+> - **On Linux**: You can generate AppImage for Linux. For Windows, you need Wine. For Mac, you need to run on macOS.
+> - **On macOS**: You can generate for all platforms (with appropriate tools installed).
 >
-> **Recomendação**: Para gerar o instalador Linux, use WSL2 (Windows Subsystem for Linux) ou rode o comando em uma máquina Linux real.
+> **Recommendation**: To generate the Linux installer, use WSL2 (Windows Subsystem for Linux) or run the command on a real Linux machine.
 
-## Estrutura do Projeto
+## Project Structure
 
 ```
-├── electron/           # Processo principal do Electron
-│   ├── main.js        # Ponto de entrada
-│   └── preload.js     # Script de preload
+├── electron/           # Electron main process
+│   ├── main.js        # Entry point
+│   └── preload.js     # Preload script
 ├── src/
-│   ├── components/    # Componentes React
-│   │   ├── *.tsx      # Componentes
+│   ├── components/    # React components
+│   │   ├── *.tsx      # Components
 │   │   └── *.module.css  # CSS Modules
 │   ├── stores/        # Dexie DB
 │   ├── services/      # HTTP client
-│   ├── utils/         # Utilitários
-│   ├── App.tsx        # Componente principal
-│   └── index.css      # Estilos globais
-└── dist/              # Build de produção
+│   ├── utils/         # Utilities
+│   ├── App.tsx        # Main component
+│   └── index.css      # Global styles
+└── dist/              # Production build
 ```
 
-## Funcionalidades
+## Features
 
-- ✅ Gerenciamento de projetos
-- ✅ Criação e edição de requisições HTTP
-- ✅ Suporte para GET, POST, PUT, DELETE, PATCH
-- ✅ Persistência local com IndexedDB
-- ✅ Import/Export de projetos (JSON)
-- ✅ Tema claro/escuro
-- ✅ Janela customizada sem frame
-- ✅ CSS Modules para estilização
-- ✅ Modais customizados (sem bug de foco)
+- ✅ Project management
+- ✅ Create and edit HTTP requests
+- ✅ Support for GET, POST, PUT, DELETE, PATCH
+- ✅ Local persistence with IndexedDB
+- ✅ Import/Export projects (JSON)
+- ✅ Light/Dark theme
+- ✅ CSS Modules for styling
+- ✅ Custom modals (no focus bug)
+- ✅ **Generate Types from Response** (New!)
+- ✅ **Inline Folder Renaming** (New!)
 
-## Tecnologias
+## Offline & Privacy
 
-- **Electron** - Framework desktop
+This application is designed with an **Offline-First** focus.
+
+- **No User Data Collection**: No user data is sent to any external server. All your requests and projects are stored locally on your machine using IndexedDB.
+- **Update Check**: The application only makes a single `GET` request to check for application updates. No personal or usage data is transmitted during this process.
+
+## Technologies
+
+- **Electron** - Desktop framework
 - **React** - UI library
 - **TypeScript** - Type safety
 - **Vite** - Build tool
