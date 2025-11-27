@@ -29,19 +29,19 @@
       "target": [
         "nsis"
       ],
-      "icon": "src/resourses/logo.svg"
+      "icon": "src/resources/logo.png"
     },
     "mac": {
       "target": [
         "dmg"
       ],
-      "icon": "src/resourses/logo.svg"
+      "icon": "src/resources/logo.png"
     },
     "linux": {
       "target": [
         "AppImage"
       ],
-      "icon": "src/resourses/logo.svg",
+      "icon": "src/resources/logo.png",
       "category": "Network"
     }
   },

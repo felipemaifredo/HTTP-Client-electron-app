@@ -1,6 +1,5 @@
 import React from "react"
 import styles from "./TitleBar.module.css"
-import logo from "../resourses/logo.svg"
 import { GrUpdate } from "react-icons/gr"
 
 interface Props {
@@ -14,8 +13,7 @@ const TitleBar: React.FC<Props> = ({ theme, toggleTheme, updateAvailable, update
     return (
         <div className={styles.titlebar}>
             <div className={styles.leftSection}>
-                <img src={logo} alt="HTTP Client" className={styles.logo} />
-                <span className={styles.appTitle}>HTTP Client</span>
+                <span className={styles.appTitle}>Plincthet - HTTP Client</span>
             </div>
 
             <div className={styles.rightSection}>
