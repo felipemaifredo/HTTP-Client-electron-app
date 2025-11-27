@@ -1,15 +1,18 @@
 import React from "react"
 import styles from "./TitleBar.module.css"
 import logo from "../resourses/logo.png"
+import { GrUpdate } from "react-icons/gr"
 
 interface Props {
     theme: "light" | "dark"
     toggleTheme: () => void
     onNewProject: () => void
     onImport: () => void
+    updateAvailable: boolean
+    updatePriority: "normal" | "urgent"
 }
 
-const TitleBar: React.FC<Props> = ({ theme, toggleTheme, onNewProject, onImport }) => {
+const TitleBar: React.FC<Props> = ({ theme, toggleTheme, onNewProject, onImport, updateAvailable, updatePriority }) => {
     return (
         <div className={styles.titlebar}>
             <div className={styles.leftSection}>
@@ -39,6 +42,17 @@ const TitleBar: React.FC<Props> = ({ theme, toggleTheme, onNewProject, onImport 
             </div>
 
             <div className={styles.rightSection}>
+                {updateAvailable && (
+                    <a
+                        href="https://github.com/felipemaifredo/HTTP-Client-electron-app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`${styles.updateButton} ${updatePriority === "urgent" ? styles.urgent : ""}`}
+                        title={updatePriority === "urgent" ? "Urgent Update Available" : "Update Available"}
+                    >
+                        <GrUpdate />
+                    </a>
+                )}
                 <button
                     className={styles.themeButton}
                     onClick={toggleTheme}

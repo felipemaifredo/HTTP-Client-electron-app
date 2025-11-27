@@ -1,120 +1,140 @@
 .titlebar {
-    height: 48px;
-    -webkit-app-region: drag;
+    height: 45px;
+    background: var(--bg-secondary);
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    background-color: var(--bg-secondary);
-    border-bottom: 1px solid var(--border);
+    justify-content: space-between;
+    padding: 0 10px;
+    -webkit-app-region: drag;
+    border-bottom: 1px solid var(--border-color);
     user-select: none;
-    padding-left: 1rem;
 }
 
 .leftSection {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    height: 100%;
-    flex: 1;
+    gap: 10px;
 }
 
 .logo {
-    height: 24px;
-    width: 24px;
-    object-fit: contain;
+    width: 18px;
+    height: 18px;
 }
 
 .appTitle {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    margin-right: 1rem;
-    padding: 0.5rem;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
 }
 
 .actions {
     display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    height: 100%;
+    gap: 5px;
+    margin-left: 10px;
     -webkit-app-region: no-drag;
 }
 
 .actionButton {
-    padding: 0.25rem;
-    border-radius: var(--radius-md);
-    color: var(--text-secondary);
     background: transparent;
     border: none;
+    color: var(--text-secondary);
     cursor: pointer;
-    transition: all 0.2s ease;
-    display: inline-flex;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .actionButton:hover {
-    background-color: var(--bg-tertiary);
+    background: var(--bg-tertiary);
     color: var(--text-primary);
-}
-
-.actionButton.newProject:hover {
-    color: var(--accent);
 }
 
 .rightSection {
     display: flex;
     align-items: center;
-    height: 100%;
+    gap: 8px;
     -webkit-app-region: no-drag;
 }
 
 .themeButton {
-    height: 100%;
-    padding: 0 1rem;
     background: transparent;
     border: none;
-    cursor: pointer;
     color: var(--text-secondary);
-    transition: all 0.2s ease;
-    display: inline-flex;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 .themeButton:hover {
-    background-color: var(--bg-tertiary);
-    color: var(--warning);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
 }
 
 .divider {
     width: 1px;
-    height: 1rem;
-    background-color: var(--border);
-    margin: 0 0.25rem;
+    height: 16px;
+    background: var(--border-color);
+    margin: 0 4px;
 }
 
 .windowButton {
-    height: 100%;
-    padding: 0 1rem;
     background: transparent;
     border: none;
-    cursor: pointer;
     color: var(--text-secondary);
-    transition: all 0.2s ease;
-    display: inline-flex;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
     align-items: center;
     justify-content: center;
+    width: 28px;
+    height: 24px;
 }
 
 .windowButton:hover {
-    background-color: var(--bg-tertiary);
+    background: var(--bg-tertiary);
     color: var(--text-primary);
 }
 
 .windowButton.close:hover {
-    background-color: var(--danger);
+    background: #e81123;
     color: white;
+}
+
+.updateButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.updateButton:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.updateButton.urgent {
+    color: #ef4444;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }
