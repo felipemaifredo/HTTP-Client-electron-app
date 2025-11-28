@@ -173,12 +173,12 @@
 
 .methodBadge.POST {
     background-color: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
+    color: #fb923c;
 }
 
 .methodBadge.PUT {
     background-color: rgba(251, 146, 60, 0.1);
-    color: #fb923c;
+    color: #3b82f6; 
 }
 
 .methodBadge.DELETE {

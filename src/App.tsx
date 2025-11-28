@@ -1,12 +1,12 @@
+import styles from "./App.module.css"
 import { useState, useEffect } from "react"
 import { useLiveQuery } from "dexie-react-hooks"
 import { projectsStore } from "./stores/projectsStore"
 import { importProjects } from "./utils/importJson"
-import ProjectSidebar from "./components/ProjectSidebar"
-import RequestList from "./components/RequestList"
-import RequestEditor from "./components/RequestEditor"
-import TitleBar from "./components/TitleBar"
-import styles from "./App.module.css"
+import {ProjectSidebar} from "./components/ProjectSidebar"
+import {RequestList} from "./components/RequestList"
+import {RequestEditor} from "./components/RequestEditor"
+import {TitleBar} from "./components/TitleBar"
 
 function App() {
     const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)

@@ -1,26 +1,34 @@
+import styles from "./styles/Modal.module.css"
 import React, { useState, useEffect } from "react"
 import { Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
-import styles from "./Modal.module.css"
 
 interface Props {
     project: Project
     onClose: () => void
 }
 
-const EnvironmentVariablesModal: React.FC<Props> = ({ project, onClose }) => {
+export const EnvironmentVariablesModal: React.FC<Props> = ({ project, onClose }) => {
     const [devContent, setDevContent] = useState("")
     const [prodContent, setProdContent] = useState("")
 
+    // Initialize state from project data
+    useEffect(() => {
+        const devEnv = project.environments?.dev || {}
+        const prodEnv = project.environments?.production || {}
+        setDevContent(jsonToEnv(devEnv))
+        setProdContent(jsonToEnv(prodEnv))
+    }, [project])
+
     // Helper to convert JSON object to .env string
-    const jsonToEnv = (env: Record<string, string>) => {
+    function jsonToEnv(env: Record<string, string>) {
         return Object.entries(env)
             .map(([key, value]) => `${key}=${value}`)
             .join("\n")
     }
 
     // Helper to convert .env string to JSON object
-    const envToJson = (content: string) => {
+    function envToJson(content: string) {
         return content.split("\n").reduce((acc, line) => {
             const trimmedLine = line.trim()
             if (!trimmedLine || trimmedLine.startsWith("#")) return acc
@@ -37,15 +45,7 @@ const EnvironmentVariablesModal: React.FC<Props> = ({ project, onClose }) => {
         }, {} as Record<string, string>)
     }
 
-    // Initialize state from project data
-    useEffect(() => {
-        const devEnv = project.environments?.dev || {}
-        const prodEnv = project.environments?.production || {}
-        setDevContent(jsonToEnv(devEnv))
-        setProdContent(jsonToEnv(prodEnv))
-    }, [project])
-
-    const handleSave = async () => {
+    async function handleSave() {
         const updatedEnvironments = {
             dev: envToJson(devContent),
             production: envToJson(prodContent)
@@ -115,5 +115,3 @@ const EnvironmentVariablesModal: React.FC<Props> = ({ project, onClose }) => {
         </div>
     )
 }
-
-export default EnvironmentVariablesModal

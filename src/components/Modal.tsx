@@ -1,8 +1,10 @@
+import styles from "./styles/Modal.module.css"
 import React, { useState, useEffect, useRef } from "react"
-import styles from "./Modal.module.css"
 
+//
 export type ModalType = "alert" | "confirm" | "prompt"
 
+//
 interface ModalProps {
     type: ModalType
     title: string
@@ -13,7 +15,8 @@ interface ModalProps {
     isDanger?: boolean
 }
 
-const Modal: React.FC<ModalProps> = ({
+//
+export const Modal: React.FC<ModalProps> = ({
     type,
     title,
     message,
@@ -32,7 +35,7 @@ const Modal: React.FC<ModalProps> = ({
         }
     }, [type])
 
-    const handleConfirm = () => {
+    function handleConfirm() {
         if (type === "prompt") {
             onConfirm(inputValue)
         } else {
@@ -40,7 +43,7 @@ const Modal: React.FC<ModalProps> = ({
         }
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    function handleKeyDown(e: React.KeyboardEvent) {
         if (e.key === "Enter") {
             handleConfirm()
         } else if (e.key === "Escape") {
@@ -48,14 +51,8 @@ const Modal: React.FC<ModalProps> = ({
         }
     }
 
-    const handleOverlayClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            onCancel()
-        }
-    }
-
     return (
-        <div className={styles.overlay} onClick={handleOverlayClick}>
+        <div className={styles.overlay}>
             <div className={styles.modal}>
                 <div className={styles.header}>
                     <h3 className={styles.title}>{title}</h3>
@@ -96,5 +93,3 @@ const Modal: React.FC<ModalProps> = ({
         </div>
     )
 }
-
-export default Modal

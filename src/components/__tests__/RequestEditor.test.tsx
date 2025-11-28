@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import RequestEditor from '../RequestEditor'
+import { RequestEditor } from '../RequestEditor'
 import { Project, HttpRequest } from '../../stores/db'
 import { httpClient } from '../../services/httpClient'
 

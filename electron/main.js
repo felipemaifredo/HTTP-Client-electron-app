@@ -60,9 +60,9 @@ app.on("window-all-closed", function () {
 ipcMain.handle("http:request", async (event, config) => {
     try {
         if (!config.headers) {
-            config.headers = {};
+            config.headers = {}
         }
-        config.headers['User-Agent'] = 'Plincthet';
+        config.headers["User-Agent"] = "Plincthet"
 
         const response = await axios(config)
         return {
@@ -109,6 +109,6 @@ ipcMain.handle("fs:load-projects", async () => {
 })
 
 // Shell
-ipcMain.handle('shell:open', async (event, url) => {
-    await shell.openExternal(url);
-});
+ipcMain.handle("shell:open", async (event, url) => {
+    await shell.openExternal(url)
+})

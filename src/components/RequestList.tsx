@@ -1,12 +1,13 @@
+import styles from "./styles/RequestList.module.css"
+import { BsFolderSymlink } from "react-icons/bs"
 import React, { useState } from "react"
 import { HttpRequest, Folder, Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
-import Modal, { ModalType } from "./Modal"
-import FolderSelectionModal from "./FolderSelectionModal"
-import styles from "./RequestList.module.css"
-import { BsFolderSymlink } from "react-icons/bs"
-import CollectionRunnerModal from "./CollectionRunnerModal"
+import { Modal, ModalType } from "./Modal"
+import { FolderSelectionModal } from "./FolderSelectionModal"
+import { CollectionRunnerModal } from "./CollectionRunnerModal"
 
+// TYPES
 interface Props {
     projectId: string
     project: Project
@@ -26,7 +27,8 @@ interface ModalState {
     isDanger?: boolean
 }
 
-const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, selectedRequestId, onSelectRequest, onDuplicateRequest }) => {
+// MAIN
+export const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, selectedRequestId, onSelectRequest, onDuplicateRequest }) => {
     const [modal, setModal] = useState<ModalState | null>(null)
     const [editingFolderId, setEditingFolderId] = useState<string | null>(null)
     const [editFolderName, setEditFolderName] = useState("")
@@ -34,7 +36,7 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
     const [movingRequestId, setMovingRequestId] = useState<string | null>(null)
     const [runnerFolder, setRunnerFolder] = useState<Folder | null>(null)
 
-    const handleNewRequest = (folderId?: string) => {
+    function handleNewRequest(folderId?: string) {
         setModal({
             isOpen: true,
             type: "prompt",
@@ -50,7 +52,7 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         })
     }
 
-    const handleNewFolder = () => {
+    function handleNewFolder() {
         setModal({
             isOpen: true,
             type: "prompt",
@@ -65,7 +67,7 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         })
     }
 
-    const handleDelete = (e: React.MouseEvent, id: string) => {
+    function handleDelete(e: React.MouseEvent, id: string) {
         e.stopPropagation()
         setModal({
             isOpen: true,
@@ -83,7 +85,7 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         })
     }
 
-    const handleDeleteFolder = (e: React.MouseEvent, folderId: string) => {
+    function handleDeleteFolder(e: React.MouseEvent, folderId: string) {
         e.stopPropagation()
         setModal({
             isOpen: true,
@@ -103,7 +105,7 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         })
     }
 
-    const handleDuplicate = async (e: React.MouseEvent, id: string) => {
+    async function handleDuplicate(e: React.MouseEvent, id: string) {
         e.stopPropagation()
         if (onDuplicateRequest) {
             onDuplicateRequest(id)
@@ -113,35 +115,35 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         }
     }
 
-    const handleStartEditFolder = (e: React.MouseEvent, folder: Folder) => {
+    function handleStartEditFolder(e: React.MouseEvent, folder: Folder) {
         e.stopPropagation()
         setEditingFolderId(folder.id)
         setEditFolderName(folder.name)
     }
 
-    const handleSaveEditFolder = async () => {
+    async function handleSaveEditFolder() {
         if (editingFolderId && editFolderName.trim()) {
             await projectsStore.renameFolder(projectId, editingFolderId, editFolderName.trim())
             setEditingFolderId(null)
         }
     }
 
-    const handleKeyDownFolder = (e: React.KeyboardEvent) => {
+    function handleKeyDownFolder(e: React.KeyboardEvent) {
         if (e.key === "Enter") handleSaveEditFolder()
         if (e.key === "Escape") setEditingFolderId(null)
     }
 
-    const toggleFolder = async (folderId: string, currentState: boolean) => {
+    async function toggleFolder(folderId: string, currentState: boolean) {
         await projectsStore.toggleFolder(projectId, folderId, !currentState)
     }
 
-    const handleOpenMoveRequest = (e: React.MouseEvent, requestId: string) => {
+    function handleOpenMoveRequest(e: React.MouseEvent, requestId: string) {
         e.stopPropagation()
         setMovingRequestId(requestId)
         setShowFolderModal(true)
     }
 
-    const handleMoveRequest = async (targetFolderId: string | null) => {
+    async function handleMoveRequest(targetFolderId: string | null) {
         if (movingRequestId) {
             await projectsStore.moveRequest(projectId, movingRequestId, targetFolderId)
             setShowFolderModal(false)
@@ -149,7 +151,7 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         }
     }
 
-    const getCurrentFolderId = (requestId: string) => {
+    function getCurrentFolderId(requestId: string) {
         if (!folders) return null
         for (const folder of folders) {
             if (folder.requests.find(r => r.id === requestId)) {
@@ -372,5 +374,3 @@ const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, s
         </div>
     )
 }
-
-export default RequestList

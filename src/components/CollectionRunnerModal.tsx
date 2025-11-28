@@ -1,7 +1,7 @@
+import styles from "./styles/CollectionRunnerModal.module.css"
 import React, { useState } from "react"
 import { Folder, Project, HttpRequest } from "../stores/db"
 import { httpClient } from "../services/httpClient"
-import styles from "./CollectionRunnerModal.module.css"
 
 interface Props {
     folder: Folder
@@ -19,14 +19,14 @@ interface RequestResult {
     error?: string
 }
 
-const CollectionRunnerModal: React.FC<Props> = ({ folder, project, onClose }) => {
+export const CollectionRunnerModal: React.FC<Props> = ({ folder, project, onClose }) => {
     const [results, setResults] = useState<RequestResult[]>(
         folder.requests.map(req => ({ request: req, status: "pending" }))
     )
     const [isRunning, setIsRunning] = useState(false)
     const [selectedEnv, setSelectedEnv] = useState<"dev" | "production">("dev")
 
-    const substituteVariables = (text: string, env: Record<string, string>) => {
+    function substituteVariables(text: string, env: Record<string, string>) {
         let result = text
         Object.entries(env).forEach(([key, value]) => {
             result = result.replace(new RegExp(`{{${key}}}`, "g"), value)
@@ -34,7 +34,7 @@ const CollectionRunnerModal: React.FC<Props> = ({ folder, project, onClose }) =>
         return result
     }
 
-    const runAll = async () => {
+    async function runAll() {
         setIsRunning(true)
         setResults(
             folder.requests.map(req => ({ request: req, status: "pending" }))
@@ -115,7 +115,7 @@ const CollectionRunnerModal: React.FC<Props> = ({ folder, project, onClose }) =>
     const failedCount = results.filter(r => r.status === "error").length
 
     return (
-        <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && !isRunning && onClose()}>
+        <div className={styles.overlay}>
             <div className={styles.modal}>
                 <div className={styles.header}>
                     <h3 className={styles.title}>Collection Runner - {folder.name}</h3>
@@ -196,5 +196,3 @@ const CollectionRunnerModal: React.FC<Props> = ({ folder, project, onClose }) =>
         </div>
     )
 }
-
-export default CollectionRunnerModal

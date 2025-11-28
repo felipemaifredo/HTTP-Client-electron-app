@@ -1,9 +1,9 @@
+import styles from "./styles/ProjectSidebar.module.css"
 import React, { useState } from "react"
 import { Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
-import Modal, { ModalType } from "./Modal"
-import EnvironmentVariablesModal from "./EnvironmentVariablesModal"
-import styles from "./ProjectSidebar.module.css"
+import { Modal, ModalType } from "./Modal"
+import { EnvironmentVariablesModal } from "./EnvironmentVariablesModal"
 
 interface Props {
     projects: Project[]
@@ -22,35 +22,35 @@ interface ModalState {
     isDanger?: boolean
 }
 
-const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelectProject, onNewProject, onImport }) => {
+export const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelectProject, onNewProject, onImport }) => {
     const [editingId, setEditingId] = useState<string | null>(null)
     const [editName, setEditName] = useState("")
     const [modal, setModal] = useState<ModalState | null>(null)
     const [envModalProject, setEnvModalProject] = useState<Project | null>(null)
 
-    const handleStartEdit = (project: Project) => {
+    function handleStartEdit(project: Project) {
         setEditingId(project.id)
         setEditName(project.name)
     }
 
-    const handleSaveEdit = async () => {
+    async function handleSaveEdit() {
         if (editingId && editName.trim()) {
             await projectsStore.updateProject(editingId, { name: editName.trim() })
             setEditingId(null)
         }
     }
 
-    const handleKeyDown = (e: React.KeyboardEvent) => {
+    function handleKeyDown(e: React.KeyboardEvent) {
         if (e.key === "Enter") handleSaveEdit()
         if (e.key === "Escape") setEditingId(null)
     }
 
-    const handleExport = async (e: React.MouseEvent, project: Project) => {
+    async function handleExport(e: React.MouseEvent, project: Project) {
         e.stopPropagation()
         await window.api.saveProjects([project])
     }
 
-    const handleDelete = (e: React.MouseEvent, id: string) => {
+    function handleDelete(e: React.MouseEvent, id: string) {
         e.stopPropagation()
         setModal({
             isOpen: true,
@@ -190,5 +190,3 @@ const ProjectSidebar: React.FC<Props> = ({ projects, selectedProjectId, onSelect
         </div>
     )
 }
-
-export default ProjectSidebar

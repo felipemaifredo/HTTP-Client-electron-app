@@ -1,5 +1,5 @@
 //
-import styles from "./RequestEditor.module.css"
+import styles from "./styles/RequestEditor.module.css"
 
 //
 import React, { useState, useEffect } from "react"
@@ -9,7 +9,6 @@ import { JSONTree } from 'react-json-tree'
 import { HttpRequest, Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import { httpClient } from "../services/httpClient"
-//import { generateTypes } from "../utils/typeGenerator"
 
 //
 interface Props {
@@ -36,8 +35,9 @@ const transparentTheme = {
     base0F: "#ff0066",
 }
 
-const RequestEditor: React.FC<Props> = ({ project, request }) => {
+export const RequestEditor: React.FC<Props> = ({ project, request }) => {
     const [localRequest, setLocalRequest] = useState<HttpRequest>(request)
+    const [forceSaveState, setForceSaveState] = useState<boolean>(false)
     const [response, setResponse] = useState<any>(null)
     const [loading, setLoading] = useState(false)
     const [activeTab, setActiveTab] = useState<"params" | "headers" | "body">("params")
@@ -76,16 +76,31 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         setBodyError(false)
     }, [request.id])
 
-    const handleChange = (field: keyof HttpRequest, value: any) => {
-        const updated = { ...localRequest, [field]: value }
-        setLocalRequest(updated)
+    useEffect(() => {
+        save()
+    }, [forceSaveState])
+
+    function forceSave() {
+        setForceSaveState(!forceSaveState)
     }
 
-    const save = async () => {
+    function handleChange(field: keyof HttpRequest, value: any) {
+        const updated = { ...localRequest, [field]: value }
+        setLocalRequest(updated)
+        forceSave()
+    }
+
+    function handleSelectChange(field: keyof HttpRequest, value: any) {
+        const updated = { ...localRequest, [field]: value }
+        setLocalRequest(updated)
+        forceSave()
+    }
+
+    async function save() {
         await projectsStore.updateRequest(project.id, localRequest)
     }
 
-    const substituteVariables = (text: string, env: Record<string, string>) => {
+    function substituteVariables(text: string, env: Record<string, string>) {
         let result = text
         Object.entries(env).forEach(([key, value]) => {
             result = result.replace(new RegExp(`{{${key}}}`, "g"), value)
@@ -93,7 +108,7 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         return result
     }
 
-    const handleSend = async () => {
+    async function handleSend() {
         setLoading(true)
         setResponse(null)
         try {
@@ -145,14 +160,14 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         }
     }
 
-    const copyVariable = (key: string) => {
+    function copyVariable(key: string) {
         const text = `{{${key}}}`
         navigator.clipboard.writeText(text)
         setCopiedKey(key)
         setTimeout(() => setCopiedKey(null), 1000)
     }
 
-    const copyResponse = () => {
+    function copyResponse() {
         if (!response) return
         const text = response.error ? response.error : JSON.stringify(response.data, null, 2)
         navigator.clipboard.writeText(text)
@@ -160,68 +175,64 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         setTimeout(() => setResponseCopied(false), 2000)
     }
 
-    const handleParamsBlur = () => {
+    function handleParamsBlur() {
         if (!paramsText.trim()) {
             handleChange("params", {})
             setParamsError(false)
-            save()
             return
         }
         try {
             const parsed = JSON.parse(paramsText)
             handleChange("params", parsed)
             setParamsError(false)
-            save()
+
         } catch (e) {
             setParamsError(true)
             console.error("Invalid JSON in params:", e)
         }
     }
 
-    const handleHeadersBlur = () => {
+    function handleHeadersBlur() {
         if (!headersText.trim()) {
             handleChange("headers", {})
             setHeadersError(false)
-            save()
             return
         }
         try {
             const parsed = JSON.parse(headersText)
             handleChange("headers", parsed)
             setHeadersError(false)
-            save()
         } catch (e) {
             setHeadersError(true)
             console.error("Invalid JSON in headers:", e)
         }
     }
 
-    const handleBodyBlur = () => {
+    function handleBodyBlur() {
         if (!bodyText.trim()) {
             handleChange("body", null)
             setBodyError(false)
-            save()
+
             return
         }
+
         try {
             const parsed = JSON.parse(bodyText)
             handleChange("body", parsed)
             setBodyError(false)
-            save()
+
         } catch (e) {
             setBodyError(true)
             console.error("Invalid JSON in body:", e)
         }
     }
 
-    const handleNameChange = (newName: string) => {
+    function handleNameChange(newName: string) {
         const updated = { ...localRequest, name: newName }
         setLocalRequest(updated)
     }
 
-
-
-    const handleNameBlur = () => {
+    function handleNameBlur() {
         save()
     }
 
@@ -269,7 +280,7 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 <select
                     className={styles.methodSelect}
                     value={localRequest.method}
-                    onChange={(e) => handleChange("method", e.target.value)}
+                    onChange={(e) => handleSelectChange("method", e.target.value)}
                 >
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
@@ -416,5 +427,3 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         </div >
     )
 }
-
-export default RequestEditor

@@ -1,7 +1,7 @@
+import styles from "./styles/FolderSelectionModal.module.css"
+import { FiFolder, FiFile } from "react-icons/fi"
 import React, { useState } from "react"
 import { Folder } from "../stores/db"
-import styles from "./FolderSelectionModal.module.css"
-import { FiFolder, FiFile } from "react-icons/fi"
 
 interface Props {
     folders: Folder[]
@@ -10,17 +10,11 @@ interface Props {
     onCancel: () => void
 }
 
-const FolderSelectionModal: React.FC<Props> = ({ folders, currentFolderId, onSelect, onCancel }) => {
+export const FolderSelectionModal: React.FC<Props> = ({ folders, currentFolderId, onSelect, onCancel }) => {
     const [selectedId, setSelectedId] = useState<string | null>(currentFolderId)
 
-    const handleOverlayClick = (e: React.MouseEvent) => {
-        if (e.target === e.currentTarget) {
-            onCancel()
-        }
-    }
-
     return (
-        <div className={styles.overlay} onClick={handleOverlayClick}>
+        <div className={styles.overlay}>
             <div className={styles.modal}>
                 <div className={styles.header}>
                     <h3 className={styles.title}>Move Request</h3>
@@ -68,5 +62,3 @@ const FolderSelectionModal: React.FC<Props> = ({ folders, currentFolderId, onSel
         </div>
     )
 }
-
-export default FolderSelectionModal

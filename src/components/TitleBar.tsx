@@ -1,7 +1,8 @@
-import React from "react"
-import styles from "./TitleBar.module.css"
+import styles from "./styles/TitleBar.module.css"
 import { GrUpdate } from "react-icons/gr"
+import React from "react"
 
+//TYPES
 interface Props {
     theme: "light" | "dark"
     toggleTheme: () => void
@@ -9,7 +10,8 @@ interface Props {
     updatePriority: "normal" | "urgent"
 }
 
-const TitleBar: React.FC<Props> = ({ theme, toggleTheme, updateAvailable, updatePriority }) => {
+// MAIN
+export const TitleBar: React.FC<Props> = ({ theme, toggleTheme, updateAvailable, updatePriority }) => {
     return (
         <div className={styles.titlebar}>
             <div className={styles.leftSection}>
@@ -78,5 +80,3 @@ const TitleBar: React.FC<Props> = ({ theme, toggleTheme, updateAvailable, update
         </div>
     )
 }
-
-export default TitleBar
