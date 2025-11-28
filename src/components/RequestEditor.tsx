@@ -46,12 +46,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
     const [isResponseHovered, setIsResponseHovered] = useState(false)
     const [responseCopied, setResponseCopied] = useState(false)
 
-    // Type generation state
-    //const [showTypes, setShowTypes] = useState(false)
-    //const [generatedTypes, setGeneratedTypes] = useState("")
-    //const [isGeneratingTypes, setIsGeneratingTypes] = useState(false)
-    //const [typesCopied, setTypesCopied] = useState(false)
-
     // Local state for text editing
     const [paramsText, setParamsText] = useState("")
     const [headersText, setHeadersText] = useState("")
@@ -126,12 +120,15 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 requestToSend.body = JSON.parse(substituteVariables(bodyString, envVars))
             }
 
+            const startTime = Date.now()
             const res = await httpClient.run(requestToSend)
+            const duration = Date.now() - startTime
 
-            // Add timestamp to response
+            // Add timestamp and duration to response
             const responseWithTimestamp = {
                 ...res,
-                timestamp: Date.now()
+                timestamp: Date.now(),
+                duration
             }
 
             setResponse(responseWithTimestamp)
@@ -162,35 +159,6 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
         setResponseCopied(true)
         setTimeout(() => setResponseCopied(false), 2000)
     }
-
-    /*const handleGenerateTypes = async () => {
-        if (!response || response.error) return
-
-        if (!showTypes) {
-            setShowTypes(true)
-            if (!generatedTypes) {
-                setIsGeneratingTypes(true)
-                try {
-                    const jsonString = JSON.stringify(response.data)
-                    const types = await generateTypes(jsonString, "Response")
-                    setGeneratedTypes(types)
-                } catch (e) {
-                    console.error(e)
-                    setGeneratedTypes("// Error generating types")
-                } finally {
-                    setIsGeneratingTypes(false)
-                }
-            }
-        } else {
-            setShowTypes(false)
-        }
-    }*/
-
-    /*const copyTypes = () => {
-        navigator.clipboard.writeText(generatedTypes)
-        setTypesCopied(true)
-        setTimeout(() => setTypesCopied(false), 2000)
-    }*/
 
     const handleParamsBlur = () => {
         if (!paramsText.trim()) {
@@ -269,54 +237,28 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 />
             </div>
 
-            <div className={styles.envBar} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "10px", borderBottom: "1px solid #333" }}>
-                <div style={{ display: "flex", background: "var(--bg-tertiary)", borderRadius: "4px", padding: "2px" }}>
+            <div className={styles.envBar}>
+                <div className={styles.envToggleContainer}>
                     <button
                         onClick={() => setActiveEnv("dev")}
-                        style={{
-                            background: activeEnv === "dev" ? "#646cff" : "transparent",
-                            color: activeEnv === "dev" ? "white" : "#888",
-                            border: "none",
-                            padding: "4px 12px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            fontSize: "12px"
-                        }}
+                        className={`${styles.envToggleButton} ${activeEnv === "dev" ? styles.active : ""}`}
                     >
                         Dev
                     </button>
                     <button
                         onClick={() => setActiveEnv("production")}
-                        style={{
-                            background: activeEnv === "production" ? "#646cff" : "transparent",
-                            color: activeEnv === "production" ? "white" : "#888",
-                            border: "none",
-                            padding: "4px 12px",
-                            borderRadius: "4px",
-                            cursor: "pointer",
-                            fontSize: "12px"
-                        }}
+                        className={`${styles.envToggleButton} ${activeEnv === "production" ? styles.active : ""}`}
                     >
                         Prod
                     </button>
                 </div>
-                <div style={{ display: "flex", gap: "5px", overflowX: "auto", flex: 1 }}>
+                <div className={styles.variableChipsContainer}>
                     {Object.keys(project.environments?.[activeEnv] || {}).map(key => (
                         <button
                             key={key}
                             onClick={() => copyVariable(key)}
                             title="Click to copy"
-                            style={{
-                                background: copiedKey === key ? "#3b82f6" : "var(--bg-tertiary)",
-                                border: "1px solid var(--bg-tertiary)",
-                                color: copiedKey === key ? "white" : "#8a8a8aff",
-                                padding: "2px 8px",
-                                borderRadius: "4px",
-                                cursor: "pointer",
-                                fontSize: "11px",
-                                whiteSpace: "nowrap",
-                                transition: "all 0.2s ease"
-                            }}
+                            className={`${styles.variableChip} ${copiedKey === key ? styles.copied : ""}`}
                         >
                             {key} {copiedKey === key && "✓"}
                         </button>
@@ -408,7 +350,16 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 )}
             </div>
 
-            {response && (
+            {loading && (
+                <div className={styles.response}>
+                    <div className={styles.loadingContainer}>
+                        <div className={styles.spinner}></div>
+                        <span>Processing request...</span>
+                    </div>
+                </div>
+            )}
+
+            {!loading && response && (
                 <div className={styles.response}>
                     <div className={styles.responseHeader}>
                         {response.error ? (
@@ -422,53 +373,28 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                             <span className={styles.responseTime}>{response.duration}ms</span>
                         )}
                         {response.timestamp && (
-                            <span style={{ marginLeft: "auto", color: "#666", fontSize: "12px" }}>
+                            <span className={styles.responseTimestamp}>
                                 {new Date(response.timestamp).toLocaleString()}
                             </span>
                         )}
                     </div>
                     <div
-                        className={styles.responseBody}
+                        className={`${styles.responseBody} ${styles.responseBodyContainer}`}
                         onMouseEnter={() => setIsResponseHovered(true)}
                         onMouseLeave={() => setIsResponseHovered(false)}
-                        style={{ position: "relative", display: "flex", gap: "1px" }}
                     >
                         {isResponseHovered && (
-                            <div style={{ position: "absolute", top: "10px", right: "10px", display: "flex", gap: "5px", zIndex: 10 }}>
-                                {/*<button
-                                    onClick={handleGenerateTypes}
-                                    style={{
-                                        background: showTypes ? "#646cff" : "#333",
-                                        color: "white",
-                                        border: "1px solid #444",
-                                        borderRadius: "4px",
-                                        padding: "4px 8px",
-                                        fontSize: "12px",
-                                        cursor: "pointer",
-                                        transition: "all 0.2s"
-                                    }}
-                                >
-                                    {showTypes ? "Hide Types" : "Generate Types"}
-                                </button>*/}
+                            <div className={styles.responseActions}>
                                 <button
                                     onClick={copyResponse}
-                                    style={{
-                                        background: responseCopied ? "#10b981" : "#333",
-                                        color: "white",
-                                        border: "1px solid #444",
-                                        borderRadius: "4px",
-                                        padding: "4px 8px",
-                                        fontSize: "12px",
-                                        cursor: "pointer",
-                                        transition: "all 0.2s"
-                                    }}
+                                    className={`${styles.copyButton} ${responseCopied ? styles.copied : ""}`}
                                 >
                                     {responseCopied ? "Copied!" : "Copy JSON"}
                                 </button>
                             </div>
                         )}
 
-                        <div style={{ flex: 1, overflow: "auto", padding: "0 10px", borderRadius: "8px" }}>
+                        <div className={styles.jsonContainer}>
                             {response.error
                                 ? (
                                     <JSONTree data={response.error} theme={transparentTheme} shouldExpandNodeInitially={() => true} />
@@ -478,42 +404,15 @@ const RequestEditor: React.FC<Props> = ({ project, request }) => {
                                 )
                             }
                         </div>
-                        {/*showTypes && (
-                            <div style={{ flex: 1, overflow: "auto", borderLeft: "1px solid #333", paddingLeft: "10px", position: "relative" }}>
-                                <button
-                                    onClick={copyTypes}
-                                    style={{
-                                        position: "absolute",
-                                        top: "10px",
-                                        right: "10px",
-                                        background: typesCopied ? "#10b981" : "#333",
-                                        color: "white",
-                                        border: "1px solid #444",
-                                        borderRadius: "4px",
-                                        padding: "4px 8px",
-                                        fontSize: "12px",
-                                        cursor: "pointer",
-                                        zIndex: 5
-                                    }}
-                                >
-                                    {typesCopied ? "Copied!" : "Copy Types"}
-                                </button>
-                                <pre className={styles.responseCode} style={{ color: "#a1a1aa" }}>
-                                    {isGeneratingTypes ? "Generating types..." : generatedTypes}
-                                </pre>
-                            </div>
-                        )*/}
                     </div>
                 </div>
-            )
-            }
-            {
-                !response && (
-                    <div className={styles.emptyResponse}>
-                        Send a request to see the response here
-                    </div>
-                )
-            }
+            )}
+
+            {!loading && !response && (
+                <div className={styles.emptyResponse}>
+                    Send a request to see the response here
+                </div>
+            )}
         </div >
     )
 }

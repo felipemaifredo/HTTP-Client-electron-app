@@ -1,13 +1,15 @@
 import React, { useState } from "react"
-import { HttpRequest, Folder } from "../stores/db"
+import { HttpRequest, Folder, Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import Modal, { ModalType } from "./Modal"
 import FolderSelectionModal from "./FolderSelectionModal"
 import styles from "./RequestList.module.css"
 import { BsFolderSymlink } from "react-icons/bs"
+import CollectionRunnerModal from "./CollectionRunnerModal"
 
 interface Props {
     projectId: string
+    project: Project
     requests: HttpRequest[]
     folders: Folder[]
     selectedRequestId: string | null
@@ -24,12 +26,13 @@ interface ModalState {
     isDanger?: boolean
 }
 
-const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRequestId, onSelectRequest, onDuplicateRequest }) => {
+const RequestList: React.FC<Props> = ({ projectId, project, requests, folders, selectedRequestId, onSelectRequest, onDuplicateRequest }) => {
     const [modal, setModal] = useState<ModalState | null>(null)
     const [editingFolderId, setEditingFolderId] = useState<string | null>(null)
     const [editFolderName, setEditFolderName] = useState("")
     const [showFolderModal, setShowFolderModal] = useState(false)
     const [movingRequestId, setMovingRequestId] = useState<string | null>(null)
+    const [runnerFolder, setRunnerFolder] = useState<Folder | null>(null)
 
     const handleNewRequest = (folderId?: string) => {
         setModal({
@@ -283,6 +286,18 @@ const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRe
                                     </button>
                                     <button
                                         className={styles.folderRenameButton}
+                                        onClick={(e) => {
+                                            e.stopPropagation()
+                                            setRunnerFolder(folder)
+                                        }}
+                                        title="Run Folder"
+                                    >
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                        </svg>
+                                    </button>
+                                    <button
+                                        className={styles.folderRenameButton}
                                         onClick={(e) => handleStartEditFolder(e, folder)}
                                         title="Rename Folder"
                                     >
@@ -344,6 +359,14 @@ const RequestList: React.FC<Props> = ({ projectId, requests, folders, selectedRe
                         setShowFolderModal(false)
                         setMovingRequestId(null)
                     }}
+                />
+            )}
+
+            {runnerFolder && (
+                <CollectionRunnerModal
+                    folder={runnerFolder}
+                    project={project}
+                    onClose={() => setRunnerFolder(null)}
                 />
             )}
         </div>

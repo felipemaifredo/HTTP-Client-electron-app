@@ -88,6 +88,7 @@ function App() {
                     {selectedProjectId ? (
                         <RequestList
                             projectId={selectedProjectId}
+                            project={selectedProject!}
                             requests={selectedProject?.requests || []}
                             folders={selectedProject?.folders || []}
                             selectedRequestId={selectedRequestId}
