@@ -12,7 +12,8 @@
     "make": "npm run build && electron-builder",
     "make:linux": "npm run build && electron-builder --linux",
     "make:win": "npm run build && electron-builder --win",
-    "make:mac": "npm run build && electron-builder --mac"
+    "make:mac": "npm run build && electron-builder --mac",
+    "test": "vitest"
   },
   "build": {
     "appId": "com.plincthet.app",
@@ -58,6 +59,9 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
     "@types/uuid": "^9.0.7",
@@ -65,8 +69,10 @@
     "concurrently": "^8.2.2",
     "electron": "^28.1.0",
     "electron-builder": "^24.13.3",
+    "jsdom": "^27.2.0",
     "typescript": "^5.3.3",
     "vite": "^5.0.8",
+    "vitest": "^4.0.14",
     "wait-on": "^7.2.0"
   }
 }

@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import packageJson from './package.json'
@@ -13,4 +14,9 @@ export default defineConfig({
     strictPort: true,
   },
   base: './', // Important for Electron to load assets with relative paths
-})
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+  },
+} as any)
