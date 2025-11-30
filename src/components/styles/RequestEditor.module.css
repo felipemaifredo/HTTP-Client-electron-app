@@ -350,7 +350,7 @@
     z-index: 10;
 }
 
-.copyButton {
+.copyButton, .defineTypeButton {
     background: #333;
     color: white;
     border: 1px solid #444;
@@ -389,6 +389,24 @@
     border-top-color: var(--accent);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+}
+
+.validationResult {
+    margin-left: 10px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.validationResult.valid {
+    color: var(--success);
+}
+
+.validationResult.invalid {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border: 1px solid rgba(239, 68, 68, 0.2);
 }
 
 @keyframes spin {

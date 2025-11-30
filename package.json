@@ -1,7 +1,7 @@
 {
   "name": "plincthet-http-client-electron",
   "private": true,
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Modern HTTP Client built with Electron and React",
   "author": "felipemaifredo",
   "main": "electron/main.js",
@@ -47,6 +47,7 @@
     }
   },
   "dependencies": {
+    "ajv": "^6.12.6",
     "axios": "^1.6.2",
     "clsx": "^2.0.0",
     "dexie": "^3.2.4",

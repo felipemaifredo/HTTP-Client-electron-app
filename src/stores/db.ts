@@ -17,6 +17,7 @@ export interface HttpRequest {
         duration: number
         timestamp: number
     }
+    expectedTypes?: string // JSON Schema as string
 }
 
 export interface Folder {

@@ -9,6 +9,7 @@ import { JSONTree } from 'react-json-tree'
 import { HttpRequest, Project } from "../stores/db"
 import { projectsStore } from "../stores/projectsStore"
 import { httpClient } from "../services/httpClient"
+import { validateSchema, generateSchemaFromData, ValidationResult } from "../utils/schemaUtils"
 
 //
 interface Props {
@@ -40,7 +41,7 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
     const [forceSaveState, setForceSaveState] = useState<boolean>(false)
     const [response, setResponse] = useState<any>(null)
     const [loading, setLoading] = useState(false)
-    const [activeTab, setActiveTab] = useState<"params" | "headers" | "body">("params")
+    const [activeTab, setActiveTab] = useState<"params" | "headers" | "body" | "expectedTypes">("params")
     const [activeEnv, setActiveEnv] = useState<"dev" | "production">("dev")
     const [copiedKey, setCopiedKey] = useState<string | null>(null)
     const [isResponseHovered, setIsResponseHovered] = useState(false)
@@ -50,11 +51,14 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
     const [paramsText, setParamsText] = useState("")
     const [headersText, setHeadersText] = useState("")
     const [bodyText, setBodyText] = useState("")
+    const [expectedTypesText, setExpectedTypesText] = useState("")
 
     // Validation errors
     const [paramsError, setParamsError] = useState(false)
     const [headersError, setHeadersError] = useState(false)
     const [bodyError, setBodyError] = useState(false)
+    const [expectedTypesError, setExpectedTypesError] = useState(false)
+    const [validationResult, setValidationResult] = useState<ValidationResult | null>(null)
 
     useEffect(() => {
         setLocalRequest(request)
@@ -69,12 +73,25 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
         setParamsText(Object.keys(request.params).length > 0 ? JSON.stringify(request.params, null, 2) : "")
         setHeadersText(Object.keys(request.headers).length > 0 ? JSON.stringify(request.headers, null, 2) : "")
         setBodyText(request.body ? JSON.stringify(request.body, null, 2) : "")
+        setExpectedTypesText(request.expectedTypes || "")
 
         // Reset errors
         setParamsError(false)
         setHeadersError(false)
+        setHeadersError(false)
         setBodyError(false)
+        setExpectedTypesError(false)
+        setValidationResult(null)
     }, [request.id])
+
+    useEffect(() => {
+        if (response && !response.error && request.expectedTypes) {
+            const result = validateSchema(request.expectedTypes, response.data)
+            setValidationResult(result)
+        } else {
+            setValidationResult(null)
+        }
+    }, [response, request.expectedTypes])
 
     useEffect(() => {
         save()
@@ -227,6 +244,30 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
         }
     }
 
+    function handleExpectedTypesBlur() {
+        if (!expectedTypesText.trim()) {
+            handleChange("expectedTypes", null)
+            setExpectedTypesError(false)
+            return
+        }
+        try {
+            JSON.parse(expectedTypesText) // Just check if it's valid JSON
+            handleChange("expectedTypes", expectedTypesText)
+            setExpectedTypesError(false)
+        } catch (e) {
+            setExpectedTypesError(true)
+            console.error("Invalid JSON in expected types:", e)
+        }
+    }
+
+    function handleDefineAsDefaultType() {
+        if (!response || response.error) return
+        const schema = generateSchemaFromData(response.data)
+        setExpectedTypesText(schema)
+        handleChange("expectedTypes", schema)
+        setActiveTab("expectedTypes")
+    }
+
     function handleNameChange(newName: string) {
         const updated = { ...localRequest, name: newName }
         setLocalRequest(updated)
@@ -300,13 +341,13 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
                 </button>
             </div>
             <div className={styles.tabs}>
-                {["params", "headers", "body"].map((tab) => (
+                {["params", "headers", "body", "expectedTypes"].map((tab) => (
                     <button
                         key={tab}
                         className={`${styles.tab} ${activeTab === tab ? styles.active : ""}`}
                         onClick={() => setActiveTab(tab as any)}
                     >
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                        {tab === "expectedTypes" ? "Expected Types" : tab.charAt(0).toUpperCase() + tab.slice(1)}
                     </button>
                 ))}
             </div>
@@ -359,6 +400,22 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
                         {bodyError && <span className={styles.errorText}>Invalid JSON format</span>}
                     </div>
                 )}
+                {activeTab === "expectedTypes" && (
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>Expected Types (JSON Schema)</label>
+                        <textarea
+                            className={`${styles.textarea} ${expectedTypesError ? styles.error : ""}`}
+                            value={expectedTypesText}
+                            onChange={(e) => {
+                                setExpectedTypesText(e.target.value)
+                                setExpectedTypesError(false)
+                            }}
+                            onBlur={handleExpectedTypesBlur}
+                            placeholder='{ "type": "object", "properties": { ... } }'
+                        />
+                        {expectedTypesError && <span className={styles.errorText}>Invalid JSON format</span>}
+                    </div>
+                )}
             </div>
 
             {loading && (
@@ -383,6 +440,15 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
                         {response.duration && (
                             <span className={styles.responseTime}>{response.duration}ms</span>
                         )}
+                        {validationResult && (
+                            <div className={`${styles.validationResult} ${validationResult.valid ? styles.valid : styles.invalid}`}>
+                                {validationResult.valid ? (
+                                    <span>✓ Matches Expected Schema</span>
+                                ) : (
+                                    <span>⚠ Does not match Schema: {validationResult.errors.join(", ")}</span>
+                                )}
+                            </div>
+                        )}
                         {response.timestamp && (
                             <span className={styles.responseTimestamp}>
                                 {new Date(response.timestamp).toLocaleString()}
@@ -401,6 +467,13 @@ export const RequestEditor: React.FC<Props> = ({ project, request }) => {
                                     className={`${styles.copyButton} ${responseCopied ? styles.copied : ""}`}
                                 >
                                     {responseCopied ? "Copied!" : "Copy JSON"}
+                                </button>
+                                <button
+                                    className={styles.defineTypeButton}
+                                    onClick={handleDefineAsDefaultType}
+                                    title="Define response as default type"
+                                >
+                                    Define as default type
                                 </button>
                             </div>
                         )}
