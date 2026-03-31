@@ -48,6 +48,7 @@ interface ElectronApi {
     maximize: () => Promise<void>;
     close: () => Promise<void>;
     openExternal: (url: string) => Promise<void>;
+    platform: string;
 }
 
 interface Window {

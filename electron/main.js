@@ -4,10 +4,12 @@ const fs = require("fs")
 const axios = require("axios")
 
 function createWindow() {
+    const isMac = process.platform === "darwin"
     const mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
-        frame: false, // Frameless window
+        frame: !isMac, // Frameless window on Windows/Linux
+        titleBarStyle: isMac ? "hiddenInset" : "default",
         autoHideMenuBar: true, // Hide menu bar
         webPreferences: {
             preload: path.join(__dirname, "preload.js"),
@@ -24,22 +26,7 @@ function createWindow() {
         mainWindow.loadFile(path.join(__dirname, "../dist/index.html"))
     }
 
-    // Window Control Handlers
-    ipcMain.handle("window:minimize", () => {
-        mainWindow.minimize()
-    })
 
-    ipcMain.handle("window:maximize", () => {
-        if (mainWindow.isMaximized()) {
-            mainWindow.unmaximize()
-        } else {
-            mainWindow.maximize()
-        }
-    })
-
-    ipcMain.handle("window:close", () => {
-        mainWindow.close()
-    })
 }
 
 app.whenReady().then(() => {
@@ -55,6 +42,28 @@ app.on("window-all-closed", function () {
 })
 
 // IPC Handlers
+
+// Window Controls
+ipcMain.handle("window:minimize", (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (win) win.minimize()
+})
+
+ipcMain.handle("window:maximize", (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (win) {
+        if (win.isMaximized()) {
+            win.unmaximize()
+        } else {
+            win.maximize()
+        }
+    }
+})
+
+ipcMain.handle("window:close", (event) => {
+    const win = BrowserWindow.fromWebContents(event.sender)
+    if (win) win.close()
+})
 
 // HTTP Request
 ipcMain.handle("http:request", async (event, config) => {

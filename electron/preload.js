@@ -13,4 +13,7 @@ contextBridge.exposeInMainWorld("api", {
 
     // Shell
     openExternal: (url) => ipcRenderer.invoke("shell:open", url),
+
+    // Platform info
+    platform: process.platform,
 })
