@@ -8,7 +8,7 @@ function createWindow() {
     const mainWindow = new BrowserWindow({
         width: 1200,
         height: 800,
-        frame: !isMac, // Frameless window on Windows/Linux
+        frame: false,
         titleBarStyle: isMac ? "hiddenInset" : "default",
         autoHideMenuBar: true, // Hide menu bar
         webPreferences: {
